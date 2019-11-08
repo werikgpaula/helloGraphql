@@ -7,14 +7,19 @@
  */
 
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import login from './src/api/login';
 
 export default class App extends React.Component {
   state = { email: '', password: '', token: null };
 
   onPressLogin = () => {
-    login(this.state.email, this.state.password)
+    login(this.state.email, this.state.password).then(result => {
+      this.setState({
+        token: result.data.login.token
+      });
+      console.log(result.data.login.token);
+    });
   };
 
   render() {

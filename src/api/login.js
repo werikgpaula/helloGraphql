@@ -15,17 +15,23 @@ const params = {
     }
 };
 
+const LOGINQUERY = gql`
+  query Login($email: String!, $password: String!) {
+    login(email: $email, password: $password){
+      token
+    }
+  }
+`;
+
 const login = (email, password) => {
     return new Promise((resolve, reject) => {
         client
             .query({
-                query: gql`
-          {
-            login(email: ${email}, password:${password}) {
-              token
-            }
-          }
-        `
+                query: LOGINQUERY,
+                variables: {
+                    email: email,
+                    password: password
+                }
             })
             .then(result => resolve(result));
     });
