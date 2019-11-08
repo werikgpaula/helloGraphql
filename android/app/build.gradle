@@ -143,11 +143,23 @@ android {
         }
     }
     signingConfigs {
+        release {
+            storeFile file(".\\Development_Teknisa_EnhancedAPP.jks")
+            storePassword 'Development@Teknisa2018'
+            keyAlias 'developmentteknisa_enhancedapp'
+            keyPassword 'Development@Teknisa2018'
+        }
+        config {
+            storeFile file(".\\Development_Teknisa_EnhancedAPP.jks")
+            storePassword 'Development@Teknisa2018'
+            keyAlias 'developmentteknisa_enhancedapp'
+            keyPassword 'Development@Teknisa2018'
+        }
         debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            storeFile file(".\\Development_Teknisa_EnhancedAPP.jks")
+            storePassword 'Development@Teknisa2018'
+            keyAlias 'developmentteknisa_enhancedapp'
+            keyPassword 'Development@Teknisa2018'
         }
     }
     buildTypes {
