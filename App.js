@@ -7,28 +7,67 @@
  */
 
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-} from 'react-native';
-
-const styles = StyleSheet.create({
-  body: {
-    backgroundColor: 'yellow',
-  }
-});
+import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 
 export default class App extends React.Component {
+  state = {email: '', password: ''};
+
   render() {
     return (
-      <View
-        style={[{ flex: 1, flexDirection: 'row' }, styles.body]}>
-        <View >
-          <Text>Oi</Text>
+      <View style={{paddingTop: 150, flex: 1, backgroundColor: 'white'}}>
+        <Text
+          style={{
+            fontSize: 35,
+            textAlign: 'center',
+            paddingBottom: 50,
+          }}>
+          OdhenPos
+        </Text>
+        <TextInput
+          style={{borderColor: 'white', borderWidth: 1, padding: 11}}
+          placeholder="Digite seu email"
+          value={this.state.email}
+          keyboardType="email-address"
+          onChangeText={email => {
+            this.setState({email});
+          }}
+        />
+        <TextInput
+          style={{borderColor: 'black', borderWidth: 1, padding: 11}}
+          placeholder="Digite sua senha"
+          value={this.state.password}
+          secureTextEntry={true}
+          onChangeText={password => {
+            this.setState({password});
+          }}
+        />
+        <View style={{flexDirection: 'row', padding: 2}}>
+          <TouchableOpacity style={{flex: 1}} onPressRegister={() => {}}>
+            <Text
+              style={{
+                color: 'white',
+                textAlign: 'center',
+                height: '25%',
+                width: '99%',
+                backgroundColor: '#2196F3',
+              }}>
+              Register
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{flex: 1}} onPressLogin={() => {}}>
+            <Text
+              style={{
+                color: 'white',
+                textAlign: 'center',
+                height: '25%',
+                width: '99%',
+                backgroundColor: '#2196F3',
+              }}>
+              Login
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
   }
 }
-
