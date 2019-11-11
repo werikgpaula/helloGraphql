@@ -10,100 +10,115 @@ import React from 'react';
 import {
   View,
   Text,
+  StyleSheet,
+  Image,
+  Dimensions,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Alert,
 } from 'react-native';
 import {login, getUsers} from './src/api/login';
+
+const styleSheet = StyleSheet.create({
+  inputText: {
+    borderBottomColor: 'white',
+    borderBottomWidth: 1,
+    color: 'white',
+  },
+  label: {
+    color: 'white',
+    fontWeight: 'bold',
+    paddingVertical: 8,
+  },
+  button: {
+    backgroundColor: 'white',
+    padding: 8,
+    marginVertical: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
+  },
+});
 
 export default class App extends React.Component {
   state = {email: '', password: '', token: null};
 
   onPressLogin = () => {
     login(this.state.email, this.state.password).then(result => {
-      this.setState({
-        token: result.data.login.token,
-      });
-      console.log(result.data.login.token);
-      Alert.alert(result.data.login.token);
+      if (result.data.login.token) {
+        this.setState({
+          token: result.data.login.token,
+        });
+        Alert.alert('Login efetuado');
+        console.log(result.data.login.token);
+      } else {
+        Alert.alert('Credenciais Inválidas');
+      }
     });
   };
 
-  onPressRegister = () => {
-    getUsers().then(result => {
-      let emails = [];
-      result.data.users.forEach(user => {
-        return emails.push(user.email);
-      });
-      console.log(emails);
-      Alert.alert(emails.join('\n'));
+  getUsers = () => {
+    getUsers(this.state.token).then(result => {
+      console.log(result);
     });
   };
 
   render() {
     return (
-      <KeyboardAvoidingView style={{flex: 1}}>
-        <View
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          padding: 16,
+          backgroundColor: '#111111',
+        }}>
+        <Image
+          source={require('./src/logo.png')}
           style={{
-            flex: 1,
-            backgroundColor: 'white',
-            justifyContent: 'flex-end',
-          }}>
-          <Text
-            style={{
-              fontSize: 35,
-              textAlign: 'center',
-              paddingBottom: 50,
-            }}>
-            OdhenPos
-          </Text>
-          <TextInput
-            style={{borderColor: 'white', borderWidth: 1, padding: 11}}
-            placeholder="Digite seu email"
-            value={this.state.email}
-            keyboardType="email-address"
-            onChangeText={email => {
-              this.setState({email});
-            }}
-          />
-          <TextInput
-            style={{borderColor: 'black', borderWidth: 1, padding: 11}}
-            placeholder="Digite sua senha"
-            value={this.state.password}
-            secureTextEntry={true}
-            onChangeText={password => {
-              this.setState({password});
-            }}
-          />
-          <View style={{flexDirection: 'row', padding: 2}}>
-            <TouchableOpacity style={{flex: 1}} onPress={() => {}}>
-              <Text
-                style={{
-                  color: 'white',
-                  textAlign: 'center',
-                  height: '25%',
-                  width: '99%',
-                  backgroundColor: '#2196F3',
-                }}>
-                Register
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{flex: 1}} onPress={this.onPressLogin}>
-              <Text
-                style={{
-                  color: 'white',
-                  textAlign: 'center',
-                  height: '25%',
-                  width: '99%',
-                  backgroundColor: '#2196F3',
-                }}>
-                Login
-              </Text>
-            </TouchableOpacity>
-          </View>
+            height: Dimensions.get('window').height * 0.2,
+            width: Dimensions.get('window').width * 0.5,
+            alignSelf: 'center',
+          }}
+          resizeMode="center"
+        />
+        <Text style={styleSheet.label}>Email</Text>
+        <TextInput
+          style={styleSheet.inputText}
+          placeholderTextColor="white"
+          placeholder="Digite seu email"
+          value={this.state.email}
+          keyboardType="email-address"
+          onChangeText={email => {
+            this.setState({email});
+          }}
+        />
+        <Text style={styleSheet.label}>Senha</Text>
+        <TextInput
+          style={styleSheet.inputText}
+          placeholderTextColor="white"
+          placeholder="Digite sua senha"
+          value={this.state.password}
+          secureTextEntry={true}
+          onChangeText={password => {
+            this.setState({password});
+          }}
+        />
+        <TouchableOpacity style={styleSheet.button} onPress={this.onPressLogin}>
+          <Text>LOGIN</Text>
+        </TouchableOpacity>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity
+            style={[styleSheet.button, {flex: 1, marginRight: 8}]}
+            onPress={() => {}}>
+            <Text style={{}}>REGISTER</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styleSheet.button, {flex: 1}]}
+            onPress={this.getUsers}>
+            <Text>GET USERS</Text>
+          </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }
