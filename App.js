@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import login from './src/api/login';
+import { login, getUsers } from './src/api/login';
 
 export default class App extends React.Component {
   state = { email: '', password: '', token: null };
@@ -19,8 +19,20 @@ export default class App extends React.Component {
         token: result.data.login.token
       });
       console.log(result.data.login.token);
+      Alert.alert(result.data.login.token);
     });
   };
+
+  onPressRegister = () => {
+    getUsers().then(result => {
+      let emails = [];
+      result.data.users.forEach((user) => {
+        return emails.push(user.email);
+      });
+      console.log(emails);
+      Alert.alert(emails.join("\n"));
+    });
+  }
 
   render() {
     return (
@@ -52,7 +64,7 @@ export default class App extends React.Component {
           }}
         />
         <View style={{ flexDirection: 'row', padding: 2 }}>
-          <TouchableOpacity style={{ flex: 1 }} onPress={() => { }}>
+          <TouchableOpacity style={{ flex: 1 }} onPress={this.onPressRegister}>
             <Text
               style={{
                 color: 'white',
